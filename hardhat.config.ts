@@ -7,6 +7,8 @@ import '@nomiclabs/hardhat-waffle'
 import '@typechain/hardhat'
 import 'hardhat-gas-reporter'
 import 'solidity-coverage'
+import { ShardedMerkleTree } from './src/merkle'
+import fs from 'fs'
 
 dotenv.config()
 
@@ -20,6 +22,28 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
   }
 })
 
+task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
+  let airdrops
+  const shardNybbles = 2
+  const { ethers } = hre
+
+  airdrops = fs
+    .readFileSync('airdrop.json', { encoding: 'utf-8' })
+    .split('\n')
+    .filter(x => x.length > 0)
+    .map(line => {
+      const data = JSON.parse(line)
+      const owner = data.owner
+      delete data.owner
+      data.balance = ethers.BigNumber.from(data.past_tokens.toString().split('.')[0])
+        .add(ethers.BigNumber.from(data.future_tokens.toString().split('.')[0]))
+        .toString()
+      return [owner, data]
+    })
+
+  ShardedMerkleTree.build(airdrops, shardNybbles, `airdrops/${hre.network.name}`)
+})
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -27,24 +51,46 @@ const hardhatConfig: HardhatUserConfig = {
   solidity: '0.8.7',
   networks: {
     hardhat: {
-      initialDate: config.UNLOCK_BEGIN
+      initialDate: config.UNLOCK_BEGIN,
       // tags: ['test']
+      accounts: {
+        mnemonic: process.env.HOP_MNEMONIC_TESTNET,
+      },
+      mining: {
+        auto: false,
+        interval: [3000, 15000],
+      },
+    },
+    localhost: {
+      url: 'http://localhost:8545',
+      accounts: {
+        mnemonic: process.env.HOP_MNEMONIC_TESTNET,
+      },
     },
     mainnet: {
       url: process.env.RPC_ENDPOINT_MAINNET || '',
       accounts:
-        process.env.DEPLOYER_PRIVATE_KEY !== undefined
-          ? [process.env.DEPLOYER_PRIVATE_KEY]
-          : []
+        process.env.DEPLOYER_PRIVATE_KEY !== undefined ? [process.env.DEPLOYER_PRIVATE_KEY] : [],
     },
     goerli: {
-      url: process.env.RPC_ENDPOINT_GOERLI || '',
-      accounts:
-        process.env.DEPLOYER_PRIVATE_KEY !== undefined
-          ? [process.env.DEPLOYER_PRIVATE_KEY]
-          : []
-    }
-  }
+      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      accounts: {
+        mnemonic: process.env.HOP_MNEMONIC_TESTNET,
+      },
+    },
+    rinkeby: {
+      url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      accounts: {
+        mnemonic: process.env.HOP_MNEMONIC_TESTNET,
+      },
+    },
+    ropsten: {
+      url: `https://eth-ropsten.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
+      accounts: {
+        mnemonic: process.env.HOP_MNEMONIC_TESTNET,
+      },
+    },
+  },
 }
 
 export default hardhatConfig
