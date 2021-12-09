@@ -9,6 +9,7 @@ import 'hardhat-gas-reporter'
 import 'solidity-coverage'
 import { ShardedMerkleTree } from './src/merkle'
 import fs from 'fs'
+import { deploy } from './tasks/deploy'
 
 dotenv.config()
 
@@ -20,6 +21,10 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
   for (const account of accounts) {
     console.log(account.address)
   }
+})
+
+task('deploy', 'Deploys contracts', async (taskArgs, hre) => {
+  await deploy(hre)
 })
 
 task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {

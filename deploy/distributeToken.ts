@@ -1,24 +1,42 @@
-import { ethers } from 'hardhat'
 import config from '../config'
-import { Contract } from 'ethers'
+import { Contract, utils, BigNumber } from 'ethers'
+import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
-const oneToken = ethers.BigNumber.from(10).pow(18)
+const oneToken = BigNumber.from(10).pow(18)
 
-export default async (token: Contract, timelock: Contract, tokenLock: Contract) => {
+export async function distributeToken(
+  hre: HardhatRuntimeEnvironment,
+  token: Contract,
+  timelock: Contract,
+  tokenLock: Contract
+) {
+  const { ethers } = hre
   const accounts = await ethers.getSigners()
   const deployer = await accounts[0].getAddress()
 
   // Transfer locked tokens to the tokenlock
-  if((await tokenLock.lockedAmounts(timelock.address)).eq(0)) {
+  if ((await tokenLock.lockedAmounts(timelock.address)).eq(0)) {
+    console.log('No locked amounts')
     const lockedDAOTokens = oneToken.mul(config.LOCKED_DAO_TOKENS)
+    console.log(`lockedDAOTokens:`, lockedDAOTokens)
+
+    console.log('approving tokenLock to spend lockedDAOTokens:', utils.formatUnits(lockedDAOTokens))
     await (await token.approve(tokenLock.address, lockedDAOTokens)).wait()
+
+    console.log('Locking tokens:', utils.formatUnits(lockedDAOTokens))
     await (await tokenLock.lock(timelock.address, lockedDAOTokens)).wait()
   }
 
+  console.log('Transferring free tokens to timelock controller')
   // Transfer free tokens to the timelock controller
   const totalContributorTokens = oneToken.mul(config.TOTAL_CONTRIBUTOR_TOKENS)
+
   const balance = await token.balanceOf(deployer)
-  if(balance.gt(totalContributorTokens)) {
+  if (balance.gt(totalContributorTokens)) {
+    console.log(
+      'Deployer balance >> totalContributorTokens. Transferring diff to timelock:',
+      timelock.address
+    )
     await (await token.transfer(timelock.address, balance.sub(totalContributorTokens))).wait()
   }
 
