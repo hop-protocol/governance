@@ -4,6 +4,10 @@
   "description": "Hop Governance Contracts",
   "main": "index.ts",
   "scripts": {
+    "mt": "npx hardhat maketree --network",
+    "chain": "npx hardhat node",
+    "deploy:local": "npx hardhat deploy --network localhost",
+    "deploy": "npx hardhat deploy --network",
     "test": "hardhat test",
     "lint": "npx eslint --fix \"**/*.{ts,tsx}\""
   },
