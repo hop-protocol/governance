@@ -29,7 +29,7 @@ import "./ITokenLock.sol";
  * perform the first release on the configured time. After that it will continue with the
  * default schedule.
  */
-abstract contract TokenLock is Ownable, ITokenLock {
+contract TokenLock is Ownable, ITokenLock {
     using SafeMath for uint256;
     using SafeERC20 for IERC20;
 
@@ -95,7 +95,7 @@ abstract contract TokenLock is Ownable, ITokenLock {
      * @param _vestingCliffTime Override time for when the vesting start
      * @param _revocable Whether the contract is revocable
      */
-    function _initialize(
+    function initialize(
         address _owner,
         address _beneficiary,
         address _token,
@@ -106,7 +106,7 @@ abstract contract TokenLock is Ownable, ITokenLock {
         uint256 _releaseStartTime,
         uint256 _vestingCliffTime,
         Revocability _revocable
-    ) internal {
+    ) external {
         require(!isInitialized, "Already initialized");
         require(_owner != address(0), "Owner cannot be zero");
         require(_beneficiary != address(0), "Beneficiary cannot be zero");
@@ -290,7 +290,7 @@ abstract contract TokenLock is Ownable, ITokenLock {
      * @dev Considers the schedule and takes into account already released tokens
      * @return Amount of tokens ready to be released
      */
-    function releasableAmount() public view virtual override returns (uint256) {
+    function releasableAmount() public view override returns (uint256) {
         // If a release start time is set no tokens are available for release before this date
         // If not set it follows the default schedule and tokens are available on
         // the first period passed
