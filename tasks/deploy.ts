@@ -5,13 +5,27 @@ import { deployTokenLock } from '../deploy/tokenLock'
 import { distributeToken } from '../deploy/distributeToken'
 import { setMerkleRoot } from '../deploy/setMerkleRoot'
 import { transferOwnership } from '../deploy/transferOwnership'
+import config from '../config'
 
 export async function deploy(hre) {
   const timelock = await deployTimelock(hre)
   const token = await deployToken(hre)
   await deployGovernor(hre, token, timelock)
-  const tokenLock = await deployTokenLock(hre, token)
-  await distributeToken(hre, token, timelock, tokenLock)
+
+  for (const recipientData of config.TOKEN_RECIPIENTS) {
+    await deployTokenLock(
+      hre,
+      token,
+      timelock,
+      recipientData.recipient,
+      recipientData.amount,
+      recipientData.revocable,
+      recipientData.vestingPeriods,
+      recipientData.cliffPeriods
+    )
+  }
+
+  await distributeToken(hre, token, timelock)
   await setMerkleRoot(hre, token)
   await transferOwnership(token, timelock)
 

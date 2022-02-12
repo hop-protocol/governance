@@ -44,7 +44,7 @@ export async function deployTokenLock(
     vestingPeriods, // periods
     releaseTime, // releaseStartTime
     cliffTime, // vestingCliffTime
-    revocable ? 1 : 0
+    revocable ? 1 : 2
   )
 
   console.log('TokenLock deployed to:', tokenLock.address)
