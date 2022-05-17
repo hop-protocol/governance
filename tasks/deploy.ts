@@ -20,8 +20,10 @@ export async function deploy(hre) {
       recipientData.recipient,
       recipientData.amount,
       recipientData.revocable,
+      recipientData.startPeriod,
+      recipientData.releasePeriod,
       recipientData.vestingPeriods,
-      recipientData.cliffPeriods
+      recipientData.cliffPeriod
     )
   }
 

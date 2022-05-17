@@ -1,5 +1,5 @@
 import config from '../config'
-import { Contract, utils } from 'ethers'
+import { Contract, utils, BigNumber } from 'ethers'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 const { parseUnits, formatUnits } = utils
 
@@ -23,6 +23,11 @@ export async function distributeToken(
   console.log(`  DAO: ${formatUnits(daoBalance)}`)
   const airdropBalance = await token.balanceOf(token.address)
   console.log(`  Airdrop: ${formatUnits(airdropBalance)}`)
+  let vestingTokens = BigNumber.from(0)
+  config.TOKEN_RECIPIENTS.forEach(recipient => {
+    vestingTokens = vestingTokens.add(recipient.amount)
+  })
+  console.log(`  Vesting Tokens: ${formatUnits(vestingTokens)}`)
   const companyBalance = await token.balanceOf(config.COMPANY_WALLET)
   console.log(`  Company: ${formatUnits(companyBalance)}`)
 }
