@@ -113,7 +113,7 @@ const config = {
     },
     { // Token Lock 11
       recipient: '0x0000000000000000000000000000000000000007',
-      amount: parseUnits('2984755.849519'),
+      amount: parseUnits('1802685.5511'),
       revocable: false,
       startPeriod: 0,
       releasePeriod: 12,
@@ -122,7 +122,7 @@ const config = {
     },
     { // Token Lock 12
       recipient: '0x0000000000000000000000000000000000000007',
-      amount: parseUnits('2593820.613089'),
+      amount: parseUnits('383178.124515'),
       revocable: false,
       startPeriod: 0,
       releasePeriod: 12,
@@ -131,7 +131,7 @@ const config = {
     },
     { // Token Lock 13
       recipient: '0x0000000000000000000000000000000000000007',
-      amount: parseUnits('534465.664674'),
+      amount: parseUnits('161275.556291'),
       revocable: false,
       startPeriod: 0,
       releasePeriod: 12,
@@ -140,7 +140,7 @@ const config = {
     },
     { // Token Lock 14
       recipient: '0x0000000000000000000000000000000000000007',
-      amount: parseUnits('1236282.017619'),
+      amount: parseUnits('432530.219552'),
       revocable: false,
       startPeriod: 0,
       releasePeriod: 12,
@@ -149,7 +149,7 @@ const config = {
     },
     { // Token Lock 15
       recipient: '0x0000000000000000000000000000000000000007',
-      amount: parseUnits('1416006.148320'),
+      amount: parseUnits('205086.399974'),
       revocable: false,
       startPeriod: 0,
       releasePeriod: 12,
@@ -158,7 +158,142 @@ const config = {
     },
     { // Token Lock 16
       recipient: '0x0000000000000000000000000000000000000007',
-      amount: parseUnits('594353.882769'),
+      amount: parseUnits('2593820.613089'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 17
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('534465.664674'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 18
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('1236282.017619'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 19
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('1416006.148320'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 20
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('71252.805751'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 21
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('35925.784412'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 22
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('68041.258357'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 23
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('27216.503343'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 24
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('13608.251671'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 25
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('27216.503343'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 26
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('27216.503343'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 27
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('27216.503343'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 28
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('40824.755014'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 29
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('112948.488873'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 30
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('136082.516714'),
+      revocable: false,
+      startPeriod: 0,
+      releasePeriod: 12,
+      vestingPeriods: 12,
+      cliffPeriod: 0
+    },
+    { // Token Lock 31
+      recipient: '0x0000000000000000000000000000000000000007',
+      amount: parseUnits('6804.125836'),
       revocable: false,
       startPeriod: 0,
       releasePeriod: 12,
