@@ -52,6 +52,8 @@ task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
+const accounts = process.env.DEPLOYER_PRIVATE_KEY !== undefined ? [process.env.DEPLOYER_PRIVATE_KEY] : []
+
 const hardhatConfig: HardhatUserConfig = {
   solidity: {
     compilers: [
@@ -83,26 +85,19 @@ const hardhatConfig: HardhatUserConfig = {
     },
     mainnet: {
       url: process.env.RPC_ENDPOINT_MAINNET || '',
-      accounts:
-        process.env.DEPLOYER_PRIVATE_KEY !== undefined ? [process.env.DEPLOYER_PRIVATE_KEY] : []
+      accounts
     },
     goerli: {
-      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
-      accounts: {
-        mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      }
+      url: process.env.RPC_ENDPOINT_GOERLI,
+      accounts
     },
     rinkeby: {
-      url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
-      accounts: {
-        mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      }
+      url: process.env.RPC_ENDPOINT_RINKEBY,
+      accounts
     },
     ropsten: {
-      url: `https://eth-ropsten.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
-      accounts: {
-        mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      }
+      url: process.env.RPC_ENDPOINT_ROPSTEN,
+      accounts
     }
   }
 }
