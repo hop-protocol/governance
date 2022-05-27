@@ -300,7 +300,7 @@ const config = {
       vestingPeriods: 12,
       cliffPeriod: 0
     },
-    { // Token Lock 17
+    { // Token Lock 32
       recipient: '0x0000000000000000000000000000000000000007',
       amount: parseUnits('368552.390661'),
       revocable: false,
@@ -309,7 +309,7 @@ const config = {
       vestingPeriods: 12,
       cliffPeriod: 0
     },
-    { // Token Lock 18
+    { // Token Lock 33
       recipient: '0x0000000000000000000000000000000000000007',
       amount: parseUnits('249975.763901'),
       revocable: false,
@@ -318,7 +318,7 @@ const config = {
       vestingPeriods: 12,
       cliffPeriod: 0
     },
-    { // Token Lock 19
+    { // Token Lock 34
       recipient: '0x0000000000000000000000000000000000000007',
       amount: parseUnits('140396.274579'),
       revocable: false,
