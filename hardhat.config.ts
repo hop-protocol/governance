@@ -24,7 +24,7 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
 })
 
 task('deploy', 'Deploys contracts', async (taskArgs, hre) => {
-  return deploy(hre)
+  return await deploy(hre)
 })
 
 task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
