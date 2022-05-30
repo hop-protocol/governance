@@ -24,7 +24,7 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
 })
 
 task('deploy', 'Deploys contracts', async (taskArgs, hre) => {
-  await deploy(hre)
+  return deploy(hre)
 })
 
 task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
@@ -69,10 +69,6 @@ const hardhatConfig: HardhatUserConfig = {
       // tags: ['test']
       accounts: {
         mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      },
-      mining: {
-        auto: false,
-        interval: [3000, 15000],
       }
     },
     localhost: {
@@ -104,6 +100,9 @@ const hardhatConfig: HardhatUserConfig = {
         mnemonic: process.env.HOP_MNEMONIC_TESTNET
       }
     }
+  },
+  mocha: {
+    timeout: 60000
   }
 }
 
