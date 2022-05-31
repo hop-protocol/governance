@@ -3,7 +3,6 @@ import { deployToken } from '../deploy/token'
 import { deployGovernor } from '../deploy/governor'
 import { deployTokenLock } from '../deploy/tokenLock'
 import { distributeToken } from '../deploy/distributeToken'
-import { setMerkleRoot } from '../deploy/setMerkleRoot'
 import { transferOwnership } from '../deploy/transferOwnership'
 import { Contract } from 'ethers'
 import config from '../config'
@@ -31,7 +30,6 @@ export async function deploy(hre) {
   }
 
   await distributeToken(hre, token, timelock)
-  await setMerkleRoot(hre, token)
   await transferOwnership(token, timelock)
 
   console.log('All contracts deployed')
