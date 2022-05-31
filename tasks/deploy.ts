@@ -5,15 +5,17 @@ import { deployTokenLock } from '../deploy/tokenLock'
 import { distributeToken } from '../deploy/distributeToken'
 import { setMerkleRoot } from '../deploy/setMerkleRoot'
 import { transferOwnership } from '../deploy/transferOwnership'
+import { Contract } from 'ethers'
 import config from '../config'
 
 export async function deploy(hre) {
   const timelock = await deployTimelock(hre)
   const token = await deployToken(hre)
-  await deployGovernor(hre, token, timelock)
+  const governor = await deployGovernor(hre, token, timelock)
 
+  const tokenLocks: Contract[] = []
   for (const recipientData of config.TOKEN_RECIPIENTS) {
-    await deployTokenLock(
+    const tokenLock = await deployTokenLock(
       hre,
       token,
       timelock,
@@ -25,6 +27,7 @@ export async function deploy(hre) {
       recipientData.vestingPeriods,
       recipientData.cliffPeriod
     )
+    tokenLocks.push(tokenLock)
   }
 
   await distributeToken(hre, token, timelock)
@@ -32,4 +35,10 @@ export async function deploy(hre) {
   await transferOwnership(token, timelock)
 
   console.log('All contracts deployed')
+  return {
+    timelock,
+    token,
+    governor,
+    tokenLocks
+  }
 }
