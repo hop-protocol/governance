@@ -30,7 +30,6 @@ export async function deploy(hre) {
   }
 
   await distributeToken(hre, token, timelock)
-  await transferOwnership(token, timelock)
 
   console.log('All contracts deployed')
   return {
