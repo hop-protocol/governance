@@ -44,7 +44,6 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
         _mint(msg.sender, freeSupply);
         _mint(address(this), airdropSupply);
         claimPeriodEnds = _claimPeriodEnds;
-        nextMint = block.timestamp + minimumMintInterval;
     }
 
     /**
