@@ -14,16 +14,13 @@ import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
  *       - Airdrop claim functionality via `claimTokens`. At creation time the tokens that
  *         should be available for the airdrop are transferred to the token contract address;
  *         airdrop claims are made from this balance.
- *       - Support for the owner (the DAO) to mint new tokens, at up to 2% PA.
+ *       - Support for the owner (the DAO) to mint new tokens.
  */
 contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
     using BitMaps for BitMaps.BitMap;
 
-    uint256 public constant minimumMintInterval = 365 days;
-    uint256 public constant mintCap = 200; // 2%
 
     bytes32 public merkleRoot;
-    uint256 public nextMint; // Timestamp
     uint256 public claimPeriodEnds; // Timestamp
     BitMaps.BitMap private claimed;
 
@@ -97,16 +94,11 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
     }
 
     /**
-     * @dev Mints new tokens. Can only be executed every `minimumMintInterval`, by the owner, and cannot
-     *      exceed `mintCap / 10000` fraction of the current total supply.
+     * @dev Mints new tokens.
      * @param dest The address to mint the new tokens to.
      * @param amount The quantity of tokens to mint.
      */
     function mint(address dest, uint256 amount) external onlyOwner {
-        require(amount <= (totalSupply() * mintCap) / 10000, "ENS: Mint exceeds maximum amount");
-        require(block.timestamp >= nextMint, "ENS: Cannot mint yet");
-
-        nextMint = block.timestamp + minimumMintInterval;
         _mint(dest, amount);
     }
 
