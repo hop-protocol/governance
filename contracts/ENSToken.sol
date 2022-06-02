@@ -110,6 +110,14 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
         _mint(dest, amount);
     }
 
+    /**
+     * @dev Burns the owner's tokens.
+     * @param amount The quantity of tokens to burn.
+     */
+    function burn(uint256 amount) external onlyOwner {
+        _burn(owner(), amount);
+    }
+
     // The following functions are overrides required by Solidity.
 
     function _afterTokenTransfer(address from, address to, uint256 amount)
