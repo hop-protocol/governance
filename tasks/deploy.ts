@@ -3,7 +3,6 @@ import { deployToken } from '../deploy/token'
 import { deployGovernor } from '../deploy/governor'
 import { deployTokenLock } from '../deploy/tokenLock'
 import { distributeToken } from '../deploy/distributeToken'
-import { transferOwnership } from '../deploy/transferOwnership'
 import { Contract } from 'ethers'
 import config from '../config'
 
