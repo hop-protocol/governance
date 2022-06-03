@@ -5,7 +5,7 @@ const { parseUnits } = utils
 
 describe('Hop Token', function () {
   it('Should deploy the token contract', async function () {
-    const Token = await ethers.getContractFactory('ENSToken')
+    const Token = await ethers.getContractFactory('HOPToken')
     const token = await Token.deploy(
       parseUnits('500000000'),
       parseUnits('500000000'),

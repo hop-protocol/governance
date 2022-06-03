@@ -5,7 +5,7 @@ import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
 export async function deployToken(hre: HardhatRuntimeEnvironment): Promise<any> {
   const { ethers, network } = hre
-  const Token = await ethers.getContractFactory('ENSToken')
+  const Token = await ethers.getContractFactory('HOPToken')
   const tree = ShardedMerkleTree.fromFiles(`airdrops/${network.name}`)
   const totalSupply = ethers.BigNumber.from(10).pow(18).mul(config.TOTAL_SUPPLY)
 

@@ -5,7 +5,7 @@ const tokenAddress = '0x0000000000000000000000000000000000000000'
 const timelockAddress = '0x0000000000000000000000000000000000000000'
 
 export async function setMerkleRoot() {
-  const tokenFactory = await hre.ethers.getContractFactory('ENSToken')
+  const tokenFactory = await hre.ethers.getContractFactory('HOPToken')
   const token = tokenFactory.attach(tokenAddress)
 
   const { network } = hre

@@ -9,14 +9,14 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@openzeppelin/contracts/utils/structs/BitMaps.sol";
 
 /**
- * @dev An ERC20 token for ENS.
+ * @dev An ERC20 token for HOP.
  *      Besides the addition of voting capabilities, we make a couple of customisations:
  *       - Airdrop claim functionality via `claimTokens`. At creation time the tokens that
  *         should be available for the airdrop are transferred to the token contract address;
  *         airdrop claims are made from this balance.
  *       - Support for the owner (the DAO) to mint new tokens.
  */
-contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
+contract HOPToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
     using BitMaps for BitMaps.BitMap;
 
 
@@ -38,7 +38,7 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
         uint256 airdropSupply,
         uint256 _claimPeriodEnds
     )
-        ERC20("Ethereum Name Service", "ENS")
+        ERC20("Hop", "HOP")
         ERC20Permit("Ethereum Name Service")
     {
         _mint(msg.sender, freeSupply);
@@ -55,8 +55,8 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
     function claimTokens(uint256 amount, address delegate, bytes32[] calldata merkleProof) external {
         bytes32 leaf = keccak256(abi.encodePacked(msg.sender, amount));
         (bool valid, uint256 index) = MerkleProof.verify(merkleProof, merkleRoot, leaf);
-        require(valid, "ENS: Valid proof required.");
-        require(!isClaimed(index), "ENS: Tokens already claimed.");
+        require(valid, "HOP: Valid proof required.");
+        require(!isClaimed(index), "HOP: Tokens already claimed.");
         
         claimed.set(index);
         emit Claim(msg.sender, amount);
@@ -70,7 +70,7 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
      * @param dest The address to sweep the tokens to.
      */
     function sweep(address dest) external onlyOwner {
-        require(block.timestamp > claimPeriodEnds, "ENS: Claim period not yet ended");
+        require(block.timestamp > claimPeriodEnds, "HOP: Claim period not yet ended");
         _transfer(address(this), dest, balanceOf(address(this)));
     }
 
@@ -87,7 +87,7 @@ contract ENSToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
      * @param _merkleRoot The merkle root to set.
      */
     function setMerkleRoot(bytes32 _merkleRoot) external onlyOwner {
-        require(merkleRoot == bytes32(0), "ENS: Merkle root already set");
+        require(merkleRoot == bytes32(0), "HOP: Merkle root already set");
         merkleRoot = _merkleRoot;
         emit MerkleRootChanged(_merkleRoot);
     }

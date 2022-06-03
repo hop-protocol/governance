@@ -8,7 +8,7 @@ export async function deployGovernor(
 ): Promise<Contract> {
   const { ethers } = hre
   console.log('deploying governor with args:', token.address, timelock.address)
-  const Governor = await ethers.getContractFactory('ENSGovernor')
+  const Governor = await ethers.getContractFactory('HOPGovernor')
   const governor = await Governor.deploy(token.address, timelock.address)
 
   await governor.deployed()
