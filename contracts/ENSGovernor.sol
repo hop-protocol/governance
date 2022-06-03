@@ -13,7 +13,7 @@ contract ENSGovernor is Governor, GovernorProposalThreshold, GovernorCountingSim
     constructor(ERC20Votes _token, TimelockController _timelock)
         Governor("ENS Governor")
         GovernorVotes(_token)
-        GovernorVotesQuorumFraction(100) // 1%
+        GovernorVotesQuorumFraction(30) // 0.3%
         GovernorTimelockControl(_timelock)
     {}
 
