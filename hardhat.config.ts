@@ -10,6 +10,7 @@ import 'solidity-coverage'
 import { ShardedMerkleTree } from './src/merkle'
 import fs from 'fs'
 import { deploy } from './tasks/deploy'
+import { aggregateMerkleData } from './tasks/aggregateMerkleData'
 
 dotenv.config()
 
@@ -27,13 +28,17 @@ task('deploy', 'Deploys contracts', async (taskArgs, hre) => {
   return await deploy(hre)
 })
 
+task('aggregatemerkledata', 'Aggregates Merkle data from every source', async (taskArgs, hre) => {
+  return await aggregateMerkleData()
+})
+
 task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
   let airdrops
   const shardNybbles = 2
   const { ethers } = hre
 
   airdrops = fs
-    .readFileSync('airdrop.json', { encoding: 'utf-8' })
+    .readFileSync('./data/airdrop.json', { encoding: 'utf-8' })
     .split('\n')
     .filter(x => x.length > 0)
     .map(line => {

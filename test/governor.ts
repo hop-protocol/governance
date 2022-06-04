@@ -145,7 +145,7 @@ describe('Governor', function () {
       [token.address], // target
       ['0'], // value
       [burnData], // data
-      'Mint tokens' // description
+      'Burn tokens' // description
     ]
     await governor.connect(daoVoter).propose(...burnParams)
 

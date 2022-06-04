@@ -5,6 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "mt": "npx hardhat maketree --network",
+    "aggregate-merkle-data": "npx hardhat aggregatemerkledata",
     "chain": "npx hardhat node",
     "deploy:local": "npx hardhat deploy --network localhost",
     "deploy": "npx hardhat deploy --network",
