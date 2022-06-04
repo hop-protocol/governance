@@ -14,6 +14,9 @@ export async function distributeToken(
 
   const companyDistributedTokens = parseUnits(config.COMPANY_DISTRIBUTED_TOKENS)
   await (await token.transfer(config.COMPANY_WALLET, companyDistributedTokens)).wait()
+  const multisigDistributedTokens = parseUnits(config.MULTISIG_TOKENS)
+  await (await token.transfer(config.MULTISIG_ADDRESS, multisigDistributedTokens)).wait()
+
   const balance = await token.balanceOf(deployer)
   await (await token.transfer(timelock.address, balance)).wait()
 
