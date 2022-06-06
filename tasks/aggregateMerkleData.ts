@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
-
-import { BigNumber } from 'ethers'
+import MerkleDataInterface from '../data/interfaces'
+import { BigNumber, utils } from 'ethers'
 import { airdropAddresses } from '../data/airdropAddresses'
 import { authereumAddresses } from '../data/authereumAddresses'
 import { discordAddresses } from '../data/discordAddresses'
@@ -10,33 +10,51 @@ import { testAddresses } from '../data/testAddresses'
 import { twitterAddresses } from '../data/twitterAddresses'
 
 export const dataDir = path.resolve(__dirname, '../data')
+const { parseUnits } = utils
 
-const allAddresses: any[] = [
-  airdropAddresses,
-  authereumAddresses,
-  discordAddresses,
-  individualContributorAddresses,
-  testAddresses,
-  twitterAddresses
-]
+const allAddresses: Record<string, MerkleDataInterface[]> = {
+  airdrop: airdropAddresses,
+  authereum: authereumAddresses,
+  discord: discordAddresses,
+  individual: individualContributorAddresses,
+  test: testAddresses,
+  twitter: twitterAddresses
+}
 
-export async function aggregateMerkleData () {
-  let totalAmount = BigNumber.from('0')
-  const finalData: Record<string, string> = {}
-  for (const addresses of allAddresses) {
+const expectedAmounts: Record<string, BigNumber> = {
+  authereum: parseUnits('1000'),
+  discord: parseUnits('1800'),
+  test: parseUnits('0.01'),
+  twitter: parseUnits('1800')
+}
+
+export function aggregateMerkleData (): void {
+  let totalAmount: BigNumber = BigNumber.from('0')
+
+  const finalData: Record<string, BigNumber> = {}
+  for (const group in allAddresses) {
+    const addresses = allAddresses[group]
+    const expectedAmountPerGroup = expectedAmounts[group]
+    let amountPerGroup: BigNumber = BigNumber.from('0')
     for (const data of addresses) {
       const address: string = data.address.toLowerCase()
-      const amount: BigNumber = BigNumber.from(data.amount)
+      const amount: string = data.amount
 
-      if (!finalData[address]) {
-        finalData[address] = '0'
+      // Validate amount
+      if (expectedAmountPerGroup && expectedAmountPerGroup.toString() !== amount) {
+        throw new Error(`Invalid amount for ${address} in ${group}`)
       }
 
-      const currentAmount: BigNumber = BigNumber.from(finalData[address])
-      finalData[address] = (currentAmount.add(amount)).toString()
+      if (!finalData[address]) {
+        finalData[address] = BigNumber.from('0')
+      }
 
-      totalAmount = totalAmount.add(amount)
+      finalData[address] = finalData[address].add(amount)
+      amountPerGroup = amountPerGroup.add(amount)
     }
+
+    console.log(`${group} amount: ${amountPerGroup}`)
+    totalAmount = totalAmount.add(amountPerGroup)
   }
 
   const airdropLocation = `${dataDir}/airdrop.json`
@@ -46,14 +64,14 @@ export async function aggregateMerkleData () {
 
   // Format output and write to file
   for (const address in finalData) {
-    const balance = finalData[address]
+    const balance: string = finalData[address].toString()
     const output = {
       owner: address,
       balance
     }
 
-    fs.appendFileSync(airdropLocation, JSON.stringify(output), 'utf-8')
+    fs.appendFileSync(airdropLocation, JSON.stringify(output) + '\n', 'utf-8')
   }
 
-  console.log(`Total amount: ${totalAmount}`)
+  console.log(`Total amount: ${totalAmount.toString()}`)
 }
