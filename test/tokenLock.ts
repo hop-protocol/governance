@@ -18,7 +18,7 @@ describe('Token Lock', function () {
     tokenLocks = [
       tokenLocks[0], // 3 years, 1-year cliff
       tokenLocks[2], // 2-year delay, 2-year vesting
-      tokenLocks[10] // 1-year lockup
+      tokenLocks[12] // 1-year lockup
     ]
   })
 
