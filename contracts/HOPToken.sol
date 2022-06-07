@@ -39,7 +39,7 @@ contract HOPToken is ERC20, ERC20Permit, ERC20Votes, Ownable {
         uint256 _claimPeriodEnds
     )
         ERC20("Hop", "HOP")
-        ERC20Permit("Ethereum Name Service")
+        ERC20Permit("Hop")
     {
         _mint(msg.sender, freeSupply);
         _mint(address(this), airdropSupply);
