@@ -10,6 +10,7 @@ import 'solidity-coverage'
 import { ShardedMerkleTree } from './src/merkle'
 import fs from 'fs'
 import { deploy } from './tasks/deploy'
+import { aggregateMerkleData } from './tasks/aggregateMerkleData'
 
 dotenv.config()
 
@@ -24,7 +25,11 @@ task('accounts', 'Prints the list of accounts', async (taskArgs, hre) => {
 })
 
 task('deploy', 'Deploys contracts', async (taskArgs, hre) => {
-  await deploy(hre)
+  return await deploy(hre)
+})
+
+task('aggregatemerkledata', 'Aggregates Merkle data from every source', async (taskArgs, hre) => {
+  return await aggregateMerkleData()
 })
 
 task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
@@ -33,16 +38,13 @@ task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
   const { ethers } = hre
 
   airdrops = fs
-    .readFileSync('airdrop.json', { encoding: 'utf-8' })
+    .readFileSync('./data/airdrop.json', { encoding: 'utf-8' })
     .split('\n')
     .filter(x => x.length > 0)
     .map(line => {
       const data = JSON.parse(line)
       const owner = data.owner
       delete data.owner
-      data.balance = ethers.BigNumber.from(data.past_tokens.toString().split('.')[0])
-        .add(ethers.BigNumber.from(data.future_tokens.toString().split('.')[0]))
-        .toString()
       return [owner, data]
     })
 
@@ -51,6 +53,8 @@ task('maketree', 'Generates a merkle airdrop tree', async (taskArgs, hre) => {
 
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
+
+const accounts = process.env.DEPLOYER_PRIVATE_KEY !== undefined ? [process.env.DEPLOYER_PRIVATE_KEY] : []
 
 const hardhatConfig: HardhatUserConfig = {
   solidity: {
@@ -69,10 +73,6 @@ const hardhatConfig: HardhatUserConfig = {
       // tags: ['test']
       accounts: {
         mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      },
-      mining: {
-        auto: false,
-        interval: [3000, 15000],
       }
     },
     localhost: {
@@ -83,27 +83,23 @@ const hardhatConfig: HardhatUserConfig = {
     },
     mainnet: {
       url: process.env.RPC_ENDPOINT_MAINNET || '',
-      accounts:
-        process.env.DEPLOYER_PRIVATE_KEY !== undefined ? [process.env.DEPLOYER_PRIVATE_KEY] : []
+      accounts
     },
     goerli: {
-      url: `https://eth-goerli.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
-      accounts: {
-        mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      }
+      url: process.env.RPC_ENDPOINT_GOERLI,
+      accounts
     },
     rinkeby: {
-      url: `https://eth-rinkeby.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
-      accounts: {
-        mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      }
+      url: process.env.RPC_ENDPOINT_RINKEBY,
+      accounts
     },
     ropsten: {
-      url: `https://eth-ropsten.alchemyapi.io/v2/${process.env.ALCHEMY_KEY}`,
-      accounts: {
-        mnemonic: process.env.HOP_MNEMONIC_TESTNET
-      }
+      url: process.env.RPC_ENDPOINT_ROPSTEN,
+      accounts
     }
+  },
+  mocha: {
+    timeout: 600_000
   }
 }
 

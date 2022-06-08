@@ -87,6 +87,7 @@ contract TokenLock is Ownable, ITokenLock {
      * @notice Initializes the contract
      * @param _owner Address of the contract owner
      * @param _beneficiary Address of the beneficiary of locked tokens
+     * @param _token Address of the token being distributed
      * @param _managedAmount Amount of tokens to be managed by the lock contract
      * @param _startTime Start time of the release schedule
      * @param _endTime End time of the release schedule

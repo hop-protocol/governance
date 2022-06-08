@@ -2,20 +2,26 @@ import config from '../config'
 import { Contract, BigNumber, utils } from 'ethers'
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 
-export async function deployTokenLock(
+export async function deployTokenLock (
   hre: HardhatRuntimeEnvironment,
   token: Contract,
   timelock: Contract,
   beneficiary: string,
   amount: BigNumber,
   revocable: boolean,
+  startPeriod: number,
+  releasePeriod: number,
   vestingPeriods: number,
-  cliffPeriods: number
+  cliffPeriod: number
 ): Promise<Contract> {
-  const startTime = Math.floor(new Date(config.UNLOCK_BEGIN).getTime() / 1000)
+  const unlockBegin = Math.floor(new Date(config.UNLOCK_BEGIN).getTime() / 1000)
+  const startTime = unlockBegin + (startPeriod * config.PERIOD)
   const endTime = startTime + (vestingPeriods * config.PERIOD)
-  const releaseTime = startTime + config.ONE_YEAR
-  const cliffTime = cliffPeriods > 0 ? startTime + (cliffPeriods * config.PERIOD) : 0
+  const cliffTime = cliffPeriod > 0 ? startTime + (cliffPeriod * config.PERIOD) : 0
+  let releaseTime = releasePeriod > 0 ? startTime + (releasePeriod * config.PERIOD) : 0
+  if (releaseTime === endTime) {
+    releaseTime = releaseTime - 1
+  }
 
   console.log(
     'deploying token lock with args:',
